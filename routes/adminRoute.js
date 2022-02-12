@@ -3,6 +3,8 @@ var router = express.Router();
 const userController = require('../controllers/userController')
 const passport = require('passport');
 
+// https://git.heroku.com/cbt-testt.git
+
 /** All post request *//////////////////////////////////////////////
 
 // register staff or student route
@@ -22,7 +24,7 @@ router.get('/get-single-user', userController.singleUser)
 // get single user
 router.get('/get-all-user', userController.allUsers)
 
-router.get('/get-subject', userController.getProduct)
+router.get('/get-subject', userController.getSubject)
 // /** All put request *//////////////////////////////////////////////////////////
 
 // edit single student
@@ -38,11 +40,14 @@ router.put('/add-question', userController.addQuestion)
 
 
 // remove question
-router.put('/remove-product', userController.removeQeustion)
+router.put('/remove-question', userController.removeQeustion)
 
 
 // change password
 router.post('/change-password', userController.changePassword)
+
+// take test
+router.post('/take-test', userController.takeTest)
 
 
 
@@ -50,5 +55,8 @@ router.post('/change-password', userController.changePassword)
 
 // delete single student
 router.delete('/delete-user', userController.removeUser)
+
+// delete subject
+router.delete('/delete-subject', userController.removeSubject)
 
 module.exports = router;

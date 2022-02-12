@@ -207,6 +207,13 @@ exports.addSubject = async (req,res,next) => {
   }
 }
 
+// delete subject
+exports.removeSubject = async (req,res,next) => {
+  const {subjectId} = req.query;
+  await Subjectdb.findOneAndDelete({subjectId})
+  res.json({success: true, message: `subject with the id ${subjectId} has been removed`})
+}
+
 // add question
 exports.addQuestion = async (req,res,next) => {
   const {subjectId,question} = req.body
@@ -220,14 +227,32 @@ exports.addQuestion = async (req,res,next) => {
   
 }
 
+// take a test
+exports.takeTest = async (req,res,next) => {
+  const {questions} = req.body
+
+  questions.map((question)=>{
+    question.correct = (question.rightAns == question.userAns)? true:false
+  })
+
+  
+  res.json({
+    success:true,
+    totalQuestion: questions.length,
+    passQuestion: questions.filter((question)=>question.correct == true).length,
+    failedQuestion: questions.filter((question)=>question.correct == false).length
+
+  })
+}
+
 
 // delete a question
 exports.removeQeustion = async (req,res,next) => {
   const {subjectId, questionId} = req.body
 
-  await Userdb.findOneAndUpdate(
+  await Subjectdb.findOneAndUpdate(
     { subjectId }, 
-    { $pull: { question: { questionId } } }
+    { $pull: { question: {id: questionId } } }
     // Multi
 );
 
@@ -240,6 +265,6 @@ exports.getSubject = async (req,res,next) => {
 
    const subject = await Subjectdb.find({})
     // console.log(data)
-  res.json({success: true, data})
+  res.json({success: true, subject})
 
 }
